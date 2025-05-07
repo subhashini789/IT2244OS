@@ -1,0 +1,170 @@
+
+
+*TAB SEPERATED FILES IN LINUX
+
+
+01.Creating a TSV file
+
+command: vi abc.tsv
+Opens the vi text editor to create or edit the abc.tsv file.
+
+Steps:
+1.Type vi abc.tsv to open the editor.
+2.Press i to enter insert mode.
+3.Enter the sample data:sample data entered:
+
+11	22	44	55
+88	99	77	55
+22	66	00	33
+11	22	77	88
+
+4.Press Esc, type :wq, and hit Enter to save and exit.
+
+02. Extracting Columns from a TSV File
+
+*Extract Column 1 using cut
+
+command: cut -d $'\t' -f1 abc.tsv
+
+cut: Extracts specific fields from a file.
+-d $'\t': Specifies tab (\t) as the delimiter.
+-f1: Extracts the first column.
+
+Output:
+{ ~ }  »  cut -d $'\t' -f1 abc.tsv                                                             
+11
+88
+22
+11
+
+*To extract the column 3 using awk
+
+command: awk '{print $3}' abc.tsv
+
+awk: A text-processing tool.
+{print $3}: Prints the third field ($3).
+
+Output:
+{ ~ }  » awk '{print $3}' abc.tsv                                                             
+44
+77
+00
+77
+
+03. Displaying Rows from a TSV File
+
+*Display the First Two Rows
+
+command: head -n 2 abc.tsv
+
+head -n 2: Displays the first 2 lines of the file.
+
+Output:
+{ ~ }  » head -n 2 abc.tsv                                                                    
+11      22      44      55
+88      99      77      55
+
+
+*To Display last 2 rows of a tsv file
+
+command: tail -n 2 abc.tsv
+
+tail -n 2: Displays the last 2 lines of the file.
+
+Output:
+{ ~ }  » tail -n 2 abc.tsv                                                                    
+22      66      00      33
+11      22      77      88
+
+*Display the 4th Row
+
+command: head -n 4 abc.tsv | tail -n 1
+
+head -n 4 abc.tsv: Displays the first 4 lines of the abc.tsv file.
+tail -n 1: From those first 4 lines, it displays only the last line (the 4th line).
+
+output:
+{ ~ }  » head -n 4 abc.tsv | tail -n 1                                                        
+11      22      77      88
+
+04. Displaying Entire Content of a TSV File
+
+awk '{print}' abc.tsv
+
+{print}: Prints each line of the file.
+
+Output:
+{ ~ }  » awk '{print}' abc.tsv                                                                
+11      22      44      55
+88      99      77      55
+22      66      00      33
+11      22      77      88
+
+*To display the number of fields in a file
+
+awk '{print NF; exit}' abc.tsv
+
+awk: A powerful text-processing tool.
+NF: Represents the Number of Fields (columns) in the current line.
+exit: Stops further processing after the first line is read.
+
+Output:
+{ ~ }  » awk '{print NF; exit}' abc.tsv                                                       
+4
+
+
+*To retrieve the number of lines in a file
+
+wc -l abc.tsv
+
+wc -l: Counts the number of lines in the file.
+
+Output:
+{ ~ }  » wc -l abc.tsv                                                                        
+4 abc.tsv
+
+06. Searching Specific Content in a TSV File
+
+*To display the lines containing '88' from lines 1 to 5
+
+
+head -n 5 abc.tsv | grep '88'
+
+head -n 5 abc.tsv: Displays the first 5 lines of the abc.tsv file.
+grep 'C': Filters and displays only the lines that contain the letter 'C'.
+
+Output:
+{ ~ }  » head -n 5 abc.tsv | grep '88'                                                        
+88      99      77      55
+11      22      77      88
+
+
+*Count Fields Using awk with Tab Separator
+
+awk -F '\t' '{print NF; exit}' abc.tsv
+
+-F '\t': Specifies the field separator (in this case, tab \t).
+{print NF; exit}:
+NF: Represents the number of fields (columns) in the current line.
+exit: Stops further processing after the first line is read.
+
+Output: 
+{ ~ }  » awk -F '\t' '{print NF; exit}' abc.tsv                                                 ~
+4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

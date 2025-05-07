@@ -1,0 +1,264 @@
+
+*To Open the File
+
+The vi command opens the Vi editor and is used to create or open a file
+
+Syntax: vi filename.txt
+
+To Enter Insert Mode (to type/edit):
+Press i (Insert mode)
+
+To Save & Exit:
+Press Esc, then:
+:wq → Save and exit
+
+For Navigation:
+Use arrow keys or h j k l
+
+Eg:
+
+vi xyz.txt
+sample data entered
+John 32 Engineer
+Jane 22 Student
+Bob 33 Doctor
+Mary 25 Teacher
+Alice 32 Nurse
+
+
+
+*To view contents of a File
+
+more: A Linux command that allows you to view a file one page at a time, but only scrolls forward.
+Syntax:
+more filename.txt
+
+Eg:
+more abc.txt
+
+Output:
+{ ~ }  » more xyz.txt                                                                           
+John 32 Engineer
+Jane 22 Student
+Bob 33 Doctor
+Mary 25 Teacher
+Alice 32 Nurse
+
+less: A Linux command that lets you view a file with both forward and backward scrolling, offering more navigation features than more.
+
+*To create a CSV file
+
+
+Syntax: vi filename.csv
+
+Eg: vi pqr.csv
+
+*Searching for Files
+
+The find command in Linux is used to search for files and directories in a directory hierarchy
+
+Syntax: 
+
+To Find a file by name:
+find . -name "file.txt"
+
+To find all directories
+find . -type d
+
+Eg:
+To find all CSV files
+find . -name "*.csv"
+
+Output:
+{ ~ }  » find . -name "*.csv"                                                                   
+./pqr.csv
+{ ~ }  » 
+
+
+*To retrieve the number of lines in a file
+
+The wc -l command counts the number of lines in a file or input provided
+
+Syntax: wc -l filename.txt
+
+Eg: 
+wc -l xyz.txt                                                                        
+
+Output:
+{ ~ }  » wc -l xyz.txt                                                                        
+6 xyz.txt
+
+
+*To retrieve columns and rows from a file
+
+
+cut: The cut command is used to extract specific columns or fields from a file or text input.
+
+To retrieve the 2nd column of a CSV file
+
+cut -d ',' -f 2 pqr.csv
+Output:
+{ ~ }  » cut -d ',' -f 2 pqr.csv                                                            
+34
+78
+34
+78
+
+
+To retrieve the 1st and 3rd column of a CSV file
+
+cut -d ',' -f1,3 pqr.csv
+Output:
+{ ~ }  » cut -d ',' -f1,3 pqr.csv                                                             
+23,56
+56,90
+12,14
+09,58
+
+
+awk: It's a text-processing tool that scans, filters, and manipulates data by processing lines and columns based on patterns and actions.
+
+To retrieve the 1st column of a CSV file
+
+awk -F ',' '{print $1}' pqr.csv
+Output:
+{ ~ }  » awk -F ',' '{print $1}' pqr.csv                                                      
+23
+56
+12
+09
+
+Head and Tail commands
+
+head and tail are commands used to display the first or last few lines of a file, respectively.
+
+head -n 5 pqr.csv
+This command displays the first 5 lines of the pqr.csv file. 
+
+Output:
+{ ~ }  » head -n 5 pqr.csv                                                                    
+23,34,56,78
+56,78,90,34
+12,34,14,67
+09,78,58,32
+
+tail -n 2 pqr.csv
+This command displays the last 2 lines of the pqr.csv file.
+
+Output:
+{ ~ }  »   tail -n 2 pqr.csv                                                                  
+12,34,14,67
+09,78,58,32
+
+
+*Extracting and appending  from one file to another
+
+
+cut -d ',' -f 2 pqr.csv >> pqrNew.csv
+This command extracts the second column from pqr.csv and appends the output to the pqrNew.csv file. 
+If pqrNew.csv doesn't exist, it will be created. 
+
+
+Output:
+{ ~ }  » cut -d ',' -f 2 pqr.csv >> pqrNew.csv                                                
+{ ~ }  » more pqrNew.csv                                                                        
+34
+78
+34
+78
+
+
+head -n 3 pqr.csv >> rows.csv
+This command extracts the first 3 lines from pqr.csv and appends them to the rows.csv file. 
+If rows.csv doesn't exist, it will be created. 
+
+Output:
+{ ~ }  » head -n 3 pqr.csv >> rows.csv                                                        
+{ ~ }  » more rows.csv                                                                         
+23,34,56,78
+56,78,90,34
+12,34,14,67
+
+*FILE PERMISSIONS
+
+
+In Linux, file permissions control how users and groups interact with files and directories. These permissions are categorized into 
+read, write, and execute, and they apply to owner, group, and others.
+
+Read (r): Allows the user to view the content of the file or list the contents of a directory
+Write (w): Allows the user to modify the file or add/delete files in a directory.
+Execute (x): Allows the user to execute a file as a program or enter a directory.
+
+File permissions are represented by a 9-character string:
+-rwxr-xr-x
+
+Where:
+The first character represents the file type (e.g., - for regular files, d for directories).
+The next 9 characters are split into three sets of three characters each:
+The first set represents the owner's permissions.
+The second set represents the group's permissions.
+The third set represents the others' permissions.
+
+For Example:
+-rwxr-xr--
+This means:
+
+Owner: read, write, execute (rwx)
+
+Group: read, execute (r-x)
+
+Others: read (r--)
+
+Numeric (Octal) Representation:
+
+Permissions can also be represented using numbers (octal), where each permission has a corresponding value:
+Read (r) = 4
+Write (w) = 2
+Execute (x) = 1
+
+Common Permission Values:
+777: Full permissions (read, write, execute) for everyone.
+755: Full permissions for the owner, read and execute for group and others.
+644: Read and write for the owner, read-only for group and others.
+700: Full permissions for the owner, no permissions for anyone else.
+
+
+*COMMAND PROMPT Practical
+
+
+ATTRIB command is used to view or change the attributes of files and directories in Windows.
+
+Steps:
+Create 2 files on your PC named abc.txt and xyz.txt
+Set the hidden attribute of abc.txt to hidden
+
+now, to make abc.txt visible we can use the following command
+ATTRIB -H xyz.txt:
+This command removes the Hidden attribute from the file xyz.txt.
+Now abc.txt will become visible after running this command.
+
+ATTRIB +R abc.txt:
+
+This command adds the Read-only attribute to the file abc.txt.
+Once this is done, the file abc.txt will be marked as read-only, meaning it cannot be modified unless the read-only attribute is removed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

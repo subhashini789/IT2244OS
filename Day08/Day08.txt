@@ -1,0 +1,78 @@
+
+	
+
+1) Give list of Numbers then calculate the summation and multiplication using for loop
+
+Example:
+	1 2 3 4 5
+	
+	summation:15
+	product:120
+
+
+
+sum=0
+product=1
+
+for x in 1 2 3 4 5
+	do
+	sum=$((sum+x))
+	product=$((product*x))
+done
+
+echo "summation: $sum"
+echo "product: $product"	
+
+
+2) Print the integers from 1 to 10 using while loop
+
+
+count=1
+while [ $count -le 10 ]
+do 
+  echo $count
+  count=$(($count + 1))
+done
+
+	
+Q4) Print below pattern using nested loop
+cols = 7, rows =7
+
+i)	*
+	* *
+	* * *
+	* * * *
+	* * * * *
+	* * * * * *
+	* * * * * * *
+	
+ii)	* * * * * * *
+	* * * * * *
+	* * * * *
+	* * * *
+	* * *
+	* *
+	*
+	
+for((i=0; i<7;i++))
+do
+ for((j=0;j<i;j++))
+	do
+	 echo -n "*"
+	done
+ echo " "
+done 
+	
+echo " "
+
+for((i=7; i>0;i--))
+do
+ for((j=i;j>0;j--))
+	do
+	 echo -n "*"
+	done
+ echo " "
+done
+
+
+		
