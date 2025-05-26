@@ -1,0 +1,20 @@
+read -p "Enter String1: " String_1
+read -p "Enter String2: " String_2
+len1=${#String_1}
+len2=${#String_2}
+if (( "$len1"> "$len2" )); then
+echo $String_1 " is larger than " $String_2;
+else
+echo $String_2 " is larger than " $String_1;
+fi
+
+
+/* 
+if[ "$len1" -gt "$len2" ]; then
+echo "The longer string is: $String_1"
+elif [ "$len2" -gt "$len1" ]; then
+echo "The longer string is: $String_2"
+else
+echo "both strings are equal"
+fi
+*/

@@ -1,0 +1,9 @@
+awk -F, 'NR==1 || $4> 3.5' day11Q2.csv
+
+awk -F, 'NR>1 {sum+=$4; count++} END {if (count > 0) print "Average GPA:", sum/count}' day11Q2.csv
+
+Name,Age,Department,GPA
+Priya,21,EnvironmentalScience,3.99
+David,21,IT,3.98
+Riya,22,Physicalscience,3.78
+Riyas,21,IT,3.76

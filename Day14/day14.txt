@@ -1,0 +1,69 @@
+
+//fork() and PId
+#include<stdio.h>
+#include<unistd.h>
+int main(){
+printf("\nHello world!");
+int f=fork();
+int p=getpid();
+printf("\n the pid is %d", p);
+printf("\n the fork is %d", f);
+return 0;
+}
+
+
+
+#include<stdio.h>
+#include<unistd.h>
+int main(){
+	
+int f=fork();
+if(f==0){
+	printf("i am child %d\n", );
+}
+else{
+	printf("I am perent %d\n");
+}
+return 0;
+}
+
+
+
+#include<stdio.h>
+#include<unistd.h>
+int main(){
+	
+int f1=fork();
+int f2=fork();
+if(f1==0){
+	printf("i am child \n");
+	
+}
+else if(f2==0){
+	printf("I am sibling \n");
+}
+else{
+	printf("I am parent \n");
+}
+return 0;
+}
+
+#include<stdio.h>
+#include<unistd.h>
+int main(){
+
+	int f=fork();
+	if(f==0){
+			printf("i am child. my id  \n", getppid(),getpid());
+	}
+	else{
+			int f1=fork();
+			if(f1==0){
+			  printf("i am sibiling. my parent id %d My id is %d  \n", getppid(),getpid());
+			}
+			else{
+					printf("i am parent. my parent id is %d my id is  \n", getppid(),getpid());
+			}
+	}
+return 0;
+}
