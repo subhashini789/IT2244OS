@@ -1,0 +1,210 @@
+## Question 01
+Write a C program that creates two threads. Each thread should print 
+a message indicating it is running. The main thread should wait for both 
+threads to finish before exiting.
+
+
+#include <stdio.h>
+#include <pthread.h>
+
+void* threadFunc(void* arg) {
+    int threadNum = *(int*)arg;
+    printf("Thread %d is running.\n", threadNum);
+    return NULL;
+}
+
+int main() {
+    pthread_t t1, t2;
+    int t1_id = 1, t2_id = 2;
+
+    pthread_create(&t1, NULL, threadFunc, &t1_id);
+    pthread_create(&t2, NULL, threadFunc, &t2_id);
+
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+
+    printf("Both threads finished.\n");
+    return 0;
+}
+
+
+answer
+sanduni@DESKTOP-HU962IE:~$ vi q01.c
+sanduni@DESKTOP-HU962IE:~$ gcc q01.c -o q
+sanduni@DESKTOP-HU962IE:~$ ./q
+Thread 1 is running.
+Thread 2 is running.
+Both threads finished.
+sanduni@DESKTOP-HU962IE:~$
+
+## Question 02:
+Write a program to create 5 threads. Each thread should print its thread
+ID and then exit. The main thread should join all threads and print a 
+completion message.
+use pthread_self()-to get id.
+
+```
+#include <stdio.h>
+#include <pthread.h>
+
+void* printThreadID(void* arg) {
+    pthread_t tid = pthread_self();
+    printf("Thread ID: %lu\n", tid);
+    return NULL;
+}
+
+int main() {
+    pthread_t threads[5];
+
+    for (int i = 0; i < 5; i++) {
+        pthread_create(&threads[i], NULL, printThreadID, NULL);
+    }
+
+    for (int i = 0; i < 5; i++) {
+        pthread_join(threads[i], NULL);
+    }
+
+    printf("All 5 threads have finished.\n");
+    return 0;
+}
+
+answer
+sanduni@DESKTOP-HU962IE:~$ vi q02.c
+sanduni@DESKTOP-HU962IE:~$ gcc q02.c -o q
+sanduni@DESKTOP-HU962IE:~$ ./q
+Thread ID: 125675683968704
+Thread ID: 125675675576000
+Thread ID: 125675658790592
+Thread ID: 125675667183296
+Thread ID: 125675574916800
+All 5 threads have finished.
+sanduni@DESKTOP-HU962IE:~$
+
+## Question 03
+Write a program that creates a thread which prints numbers from 1 to 10 
+with a 1-second delay between each number.The main thread should wait for 
+this thread to finish.
+
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+
+void* printNumbers(void* arg) {
+    for (int i = 1; i <= 10; i++) {
+        printf("%d\n", i);
+        sleep(1);  
+    }
+    return NULL;
+}
+
+int main() {
+    pthread_t t;
+
+    pthread_create(&t, NULL, printNumbers, NULL);
+    pthread_join(t, NULL);
+
+    printf("Number printing thread finished.\n");
+    return 0;
+}
+
+
+answer
+sanduni@DESKTOP-HU962IE:~$ vi q3.c
+sanduni@DESKTOP-HU962IE:~$ gcc q3.c -o q
+sanduni@DESKTOP-HU962IE:~$ ./q
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+Number printing thread finished.
+sanduni@DESKTOP-HU962IE:~$
+
+## Question 04
+Create two threads where one thread increments a global counter 100 times
+and the other thread decrements the same counter 100 times. 
+Print the final value of the counter after both threads finish.
+
+#include <stdio.h>
+#include <pthread.h>
+
+int counter = 0;
+
+void* increment(void* arg) {
+    for (int i = 0; i < 1000; i++) {
+        counter++;
+    }
+    return NULL;
+}
+
+void* decrement(void* arg) {
+    for (int i = 0; i < 1000; i++) {
+        counter--;
+    }
+    return NULL;
+}
+
+int main() {
+    pthread_t t1, t2;
+
+    pthread_create(&t1, NULL, increment, NULL);
+    pthread_create(&t2, NULL, decrement, NULL);
+
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+
+    printf("Final counter value: %d\n", counter);
+    return 0;
+}
+
+
+answer
+sanduni@DESKTOP-HU962IE:~$ vi q4.c
+sanduni@DESKTOP-HU962IE:~$ gcc q4.c -o q
+sanduni@DESKTOP-HU962IE:~$ ./q
+Final counter value: 0
+sanduni@DESKTOP-HU962IE:~$
+
+## Question 05
+Implement a thread function that takes an integer argument, squares it,
+and returns the result to the main thread using pthread_exit and pthread_join.
+
+
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+
+void* square(void* arg) {
+    int num = *(int*)arg;
+    int* result = malloc(sizeof(int)); 
+    *result = num * num;  
+	
+    pthread_exit(result); 
+}
+
+int main() {
+    pthread_t t;
+    int num = 5;
+
+    pthread_create(&t, NULL, square, &num);
+
+    int* res; 
+    pthread_join(t, (void**)&res);
+
+    printf("Square of %d is %d\n", num, *res);
+    free(res); 
+    return 0;
+}
+
+
+answer
+sanduni@DESKTOP-HU962IE:~$ vi q5.c
+sanduni@DESKTOP-HU962IE:~$ gcc q5.c -o q
+sanduni@DESKTOP-HU962IE:~$ ./q
+Square of 5 is 25
+sanduni@DESKTOP-HU962IE:~$
