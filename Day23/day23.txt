@@ -1,0 +1,157 @@
+
+Single threaded program.
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<pthread.h>
+
+
+
+void *helloworld(void*vargp){
+	sleep(1);
+	printf("Hello World\n");
+	return NULL;
+}
+
+int main(){
+	pthread_t thread_id;
+	printf("Before Thread\n");
+	pthread_create(&thread_id, NULL, helloworld, NULL);
+	pthread_join(thread_id, NULL);
+	printf("After Thread\n");
+	exit(0);
+}
+Answer -
+
+sanduni@DESKTOP-HU962IE:~$ vi thread.c
+sanduni@DESKTOP-HU962IE:~$ gcc thread.c -o p
+sanduni@DESKTOP-HU962IE:~$ ./p
+Before Thread
+Hello World
+After Thread
+sanduni@DESKTOP-HU962IE:~$
+
+#include<stdio.h>
+#include<pthread.h>
+
+
+void* print_message(void* arg){
+	char* message = (char*)arg;
+	printf("%s\n", message);
+	return NULL;
+}
+
+int main(){
+	pthread_t thread1, thread2;
+	
+	
+	pthread_create(&thread1, NULL, print_message, "Hello from thread 01");
+	
+	
+	pthread_create(&thread2, NULL, print_message, "Hello from thread 02");
+	
+	
+	pthread_join(thread1, NULL);
+	pthread_join(thread2, NULL);
+	
+	printf("Both threads comlpeted\n");
+	return 0;
+}
+Answer -
+
+sanduni@DESKTOP-HU962IE:~$ vi multiThread.c
+sanduni@DESKTOP-HU962IE:~$ gcc multiThread.c -o p
+sanduni@DESKTOP-HU962IE:~$ ./p
+Hello from thread 01
+Hello from thread 02
+Both threads comlpeted
+sanduni@DESKTOP-HU962IE:~$
+
+#include<stdio.h>
+#include<pthread.h>
+
+
+void* print_message(void* arg){
+	char* message = (char*)arg;
+	printf("%s\n", message);
+	return NULL;
+}
+
+int main(){
+	pthread_t thread[3];
+	char* message[] = {
+		"Thread1 says hi!",
+		"Thread2 says hello!",
+		"Thread3 says hey!"
+	};
+	
+	for(int i=0; i<3; i++){
+		pthread_create(&thread[i], NULL, print_message, message[i]);
+	}
+	
+	
+	for(int i=0; i<3; i++){
+		pthread_join(thread[i], NULL);
+	}
+	
+	printf("All threads comlpeted\n");
+	return 0;
+}
+Answer -
+
+sanduni@DESKTOP-HU962IE:~$ gcc thredEx.c -o p
+sanduni@DESKTOP-HU962IE:~$ ./p
+Thread1 says hi!
+Thread2 says hello!
+Thread3 says hey!
+All threads comlpeted
+sanduni@DESKTOP-HU962IE:~$
+
+
+Example 02 - Dependent threads
+
+#include <stdio.h>
+#include <pthread.h>
+
+#define SIZE 6
+
+int arr[SIZE] = {1, 2,3 ,4, 5,6};
+int sum1=0, sum2=0;
+
+void* sum_part1(void* arg){
+	for(int i=0; i<SIZE/2; i++){
+		sum1 += arr[i];
+	}
+	return NULL;
+}
+
+void* sum_part2(void* arg){
+	for(int i=SIZE/2; i<SIZE; i++){
+		sum2 += arr[i];
+	}
+	return NULL;
+}
+
+int main(){
+   pthread_t t1,t2;
+  
+   pthread_create(&t1,NULL,sum_part1,NULL);
+   pthread_create(&t2,NULL,sum_part2,NULL);
+   
+ 
+   pthread_join(t1,NULL);
+   pthread_join(t2,NULL);
+ 
+   
+   printf("Total sum = %d\n", sum1 + sum2);
+   
+   return 0;
+}
+Answer -
+
+sanduni@DESKTOP-HU962IE:~$ vi thredSum.c
+sanduni@DESKTOP-HU962IE:~$ gcc thredSum.c -o p
+sanduni@DESKTOP-HU962IE:~$ ./p
+Total sum = 21
+sanduni@DESKTOP-HU962IE:~$

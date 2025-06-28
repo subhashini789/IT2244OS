@@ -1,0 +1,110 @@
+
+Pipe
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#define MSGSIZE 16 
+
+
+
+char* msg1 = "hello, world #1";
+char* msg2 = "hello, world #2";
+char* msg3 = "hello, world #3";
+
+int main(){
+	
+	char inbuf[MSGSIZE]; 
+	int p[2], i; 
+	
+	if(pipe(p) < 0)
+		exit(1);
+	
+	
+	
+	
+	write(p[1], msg1, MSGSIZE); 
+	write(p[1], msg2, MSGSIZE); 
+	write(p[1], msg3, MSGSIZE); 
+	
+	for(i=0; i<3; i++){
+		read(p[0], inbuf, MSGSIZE); 
+		printf("%s\n", inbuf);
+	}
+	
+	return 0;
+}
+Answer
+
+
+//Output
+sanduni@DESKTOP-HU962IE:~$ vi pipe.c
+sanduni@DESKTOP-HU962IE:~$ gcc pipe.c -o p
+sanduni@DESKTOP-HU962IE:~$ ./p
+hello, world #1
+hello, world #2
+hello, world #3
+sanduni@DESKTOP-HU962IE:~$
+
+Question
+
+Get three input from user (//parent process) name: reg no: age:
+
+Print the output from the child(//child process) name: abc reg no: 2022/ict/01 age: 25
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+
+#define MSGSIZE 16
+
+int main() {
+    char name[MSGSIZE], regno[MSGSIZE], age[MSGSIZE];
+    int p[2], f, i;
+
+    if (pipe(p) < 0) {
+        perror("Pipe failed");
+        exit(1);
+    }
+
+    if ((f = fork()) == 0) {
+        
+        close(p[1]); 
+        for (i = 0; i < 3; i++) {
+            char inbuf[MSGSIZE];
+            read(p[0], inbuf, MSGSIZE);
+            printf("%s", inbuf);
+        } 
+        close(p[0]);
+    } else if (f > 0) {
+        
+        close(p[0]); 
+        printf("Name: ");
+        fgets(name, MSGSIZE, stdin);
+        printf("Reg No: ");
+        fgets(regno, MSGSIZE, stdin);
+        printf("Age: ");
+        fgets(age, MSGSIZE, stdin);
+
+        write(p[1], name, MSGSIZE);
+        write(p[1], regno, MSGSIZE);
+        write(p[1], age, MSGSIZE);
+        close(p[1]);
+    } else {
+        perror("Fork failed");
+        exit(1);
+    }
+
+    return 0;
+}
+Answer
+
+sanduni@DESKTOP-HU962IE:~$ gcc pipex.c -o p
+sanduni@DESKTOP-HU962IE:~$ ./p
+Name: sanduni
+Reg No: 2021ict17
+Age: 24
+sanduni
+2021ict17
+24
+sanduni@DESKTOP-HU962IE:~$
